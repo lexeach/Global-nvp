@@ -59,7 +59,7 @@ function DrawerAppBar(props) {
         <a onClick={() => openInNewTab("https://bscscan.com/address/0x57949388158dd8d2a790dbfc51cdf3caa265b64d")}>
           <ListItem disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary="CBC" />
+              <ListItemText primary="SWAP" />
             </ListItemButton>
           </ListItem>
         </a>

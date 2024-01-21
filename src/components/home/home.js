@@ -301,7 +301,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Referrer ID </h5>
+              <h5>Sponsor</h5>
               <h4 className="mb-0">{userReferrerID ? userReferrerID : 0} </h4>
             </div>
           </div>
@@ -310,7 +310,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Referred Users </h5>
+              <h5>Direct </h5>
               <h4 className="mb-0">
                 {userReferredUsers ? userReferredUsers : 0}{" "}
               </h4>
@@ -321,7 +321,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Income </h5>
+              <h5>Income </h5>
               <h4 className="mb-0">{userIncome ? userIncome : 0} USDT </h4>
             </div>
           </div>
@@ -330,7 +330,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Auto Pool Pay Received </h5>
+              <h5>Number Of Auto Pool Income</h5>
               <h4 className="mb-0">
                 {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
               </h4>
@@ -341,7 +341,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Missed Pool Payment </h5>
+              <h5>Missed Pool Payment </h5>
               <h4 className="mb-0">
                 {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
               </h4>
@@ -352,7 +352,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Autopool Pay Reciever </h5>
+              <h5>Autopool Pay Reciever </h5>
               <h4 className="mb-0">
                 {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
               </h4>
@@ -363,7 +363,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Level Income Received </h5>
+              <h5>Number Of Level Income </h5>
               <h4 className="mb-0">
                 {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
               </h4>
@@ -374,7 +374,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>User Income Missed </h5>
+              <h5>Level Income Missed </h5>
               <h4 className="mb-0">
                 {userIncomeMissed ? userIncomeMissed : 0}{" "}
               </h4>
