@@ -385,7 +385,7 @@ const Dashboard = () => {
         <div className="col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body text-center">
-              Write Functionality Is Below
+              Global-NVP address 0x3aF2E4ECEDC614D730C8113cd8fCcEd1e9bB4985
             </div>
           </div>
         </div>
