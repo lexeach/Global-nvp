@@ -3,7 +3,7 @@ import { Buffer } from "buffer";
 import Web3 from "web3";
 import { ICU, USDT } from "../../utils/web3.js";
 import { useParams } from "react-router-dom";
-// import { useLocation } from 'react-router-dom';
+import logoImage from "./../../assets/images/logo.png";
 
 const Dashboard = () => {
   window.Buffer = Buffer;
@@ -29,7 +29,8 @@ const Dashboard = () => {
   const [userIncomeMissed, setUserIncomeMissed] = useState();
   const [copied, setCopied] = useState(false);
   const [isExist, setIsExist] = useState();
-  const [id, setId] = useState("");
+  const [rewardWin, setRewardWin] = useState();
+  const [regTime, setRegTime] = useState();
 
   const [referrerId, setReferrerId] = useState();
 
@@ -76,6 +77,12 @@ const Dashboard = () => {
         Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(2)
       );
 
+      let winRewards = await NEW_CBC_ROI.methods.rewardWin(accounts[0]).call();
+      setRewardWin(Number(web3.utils.fromWei(winRewards, "ether")).toFixed(2));
+
+      let registTime = await NEW_CBC_ROI.methods.regTime(accounts[0]).call();
+      setRegTime(await epochToDate(registTime));
+
       let tokenRewardIs = await NEW_CBC_ROI.methods.tokenReward().call();
       setTokenReward(
         Number(web3.utils.fromWei(tokenRewardIs, "ether")).toFixed(2)
@@ -115,7 +122,7 @@ const Dashboard = () => {
     // Convert epoch time to milliseconds (JavaScript uses milliseconds)
     // Convert epoch to milliseconds
     if (epochTime == undefined || Number(epochTime) <= 0) {
-      return 0;
+      return "00/00/0000";
     }
     const milliseconds = epochTime * 1000;
     console.log("millisecond:", milliseconds);
@@ -193,6 +200,16 @@ const Dashboard = () => {
       alert("Error is catched", e);
     }
   };
+  const handleSubmitUnfreez = async (event) => {
+    event.preventDefault();
+    try {
+      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
+      await ICU_.methods.unfreezeYourToken().send({ from: account });
+    } catch (e) {
+      console.log("Error is :", e);
+      alert("Error is catched", e);
+    }
+  };
 
   const generateReferralLink = (id) => {
     // Implement your logic to generate the referral link based on the provided ID
@@ -225,7 +242,7 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Registration Fee</h5>
-              <h4 className="mb-0">
+              <h4 className="mb-0 golden-text">
                 {registration_Free ? registration_Free : 0} USDT
               </h4>
             </div>
@@ -237,7 +254,7 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Direct Income</h5>
-              <h4 className="mb-0">
+              <h4 className="mb-0 golden-text">
                 {registration_Free ? registration_Free / 10 : 0} USDT
               </h4>
             </div>
@@ -248,7 +265,9 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Current User ID</h5>
-              <h4 className="mb-0">{currUserID ? currUserID : 0} </h4>
+              <h4 className="mb-0 golden-text">
+                {currUserID ? currUserID : 0}{" "}
+              </h4>
             </div>
           </div>
         </div>
@@ -257,7 +276,9 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Get Next Reward</h5>
-              <h4 className="mb-0">{getNextReward ? getNextReward : 0} USDT</h4>
+              <h4 className="mb-0 golden-text">
+                {getNextReward ? getNextReward : 0} USDT
+              </h4>
             </div>
           </div>
         </div>
@@ -266,7 +287,9 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Level Income</h5>
-              <h4 className="mb-0">{level_income ? level_income : 0} USDT</h4>
+              <h4 className="mb-0 golden-text">
+                {level_income ? level_income : 0} USDT
+              </h4>
             </div>
           </div>
         </div>
@@ -275,7 +298,9 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Token Price </h5>
-              <h4 className="mb-0">{tokenPrice ? tokenPrice : 0} USDT</h4>
+              <h4 className="mb-0 golden-text">
+                {tokenPrice ? tokenPrice : 0} USDT
+              </h4>
             </div>
           </div>
         </div>
@@ -284,7 +309,9 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>Token Reward </h5>
-              <h4 className="mb-0">{tokenReward ? tokenReward : 0} USDT</h4>
+              <h4 className="mb-0 golden-text">
+                {tokenReward ? tokenReward : 0} USDT
+              </h4>
             </div>
           </div>
         </div>
@@ -293,7 +320,7 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body">
               <h5>User ID </h5>
-              <h4 className="mb-0">{userId ? userId : 0} </h4>
+              <h4 className="mb-0 golden-text">{userId ? userId : 0} </h4>
             </div>
           </div>
         </div>
@@ -301,8 +328,10 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Sponsor</h5>
-              <h4 className="mb-0">{userReferrerID ? userReferrerID : 0} </h4>
+              <h5>User Referrer ID </h5>
+              <h4 className="mb-0 golden-text">
+                {userReferrerID ? userReferrerID : 0}{" "}
+              </h4>
             </div>
           </div>
         </div>
@@ -310,8 +339,8 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Direct </h5>
-              <h4 className="mb-0">
+              <h5>User Referred Users </h5>
+              <h4 className="mb-0 golden-text">
                 {userReferredUsers ? userReferredUsers : 0}{" "}
               </h4>
             </div>
@@ -321,8 +350,10 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Income </h5>
-              <h4 className="mb-0">{userIncome ? userIncome : 0} USDT </h4>
+              <h5>User Income </h5>
+              <h4 className="mb-0 golden-text">
+                {userIncome ? userIncome : 0} USDT{" "}
+              </h4>
             </div>
           </div>
         </div>
@@ -330,8 +361,8 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Number Of Auto Pool Income</h5>
-              <h4 className="mb-0">
+              <h5>User Auto Pool Pay Received </h5>
+              <h4 className="mb-0 golden-text">
                 {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
               </h4>
             </div>
@@ -341,8 +372,8 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Missed Pool Payment </h5>
-              <h4 className="mb-0">
+              <h5>User Missed Pool Payment </h5>
+              <h4 className="mb-0 golden-text">
                 {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
               </h4>
             </div>
@@ -352,8 +383,8 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Autopool Pay Reciever </h5>
-              <h4 className="mb-0">
+              <h5>User Autopool Pay Reciever </h5>
+              <h4 className="mb-0 golden-text">
                 {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
               </h4>
             </div>
@@ -363,8 +394,8 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Number Of Level Income </h5>
-              <h4 className="mb-0">
+              <h5>User Level Income Received </h5>
+              <h4 className="mb-0 golden-text">
                 {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
               </h4>
             </div>
@@ -374,8 +405,28 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Level Income Missed </h5>
-              <h4 className="mb-0">
+              <h5>Reward Win </h5>
+              <h4 className="mb-0 golden-text ">
+                {rewardWin ? rewardWin : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Reg Time </h5>
+              <h4 className="mb-0 golden-text">{regTime ? regTime : 0} </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>User Income Missed </h5>
+              <h4 className="mb-0 golden-text">
                 {userIncomeMissed ? userIncomeMissed : 0}{" "}
               </h4>
             </div>
@@ -385,7 +436,7 @@ const Dashboard = () => {
         <div className="col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body text-center">
-              Global-NVP address 0x3aF2E4ECEDC614D730C8113cd8fCcEd1e9bB4985
+              Write Functionality Is Below
             </div>
           </div>
         </div>
@@ -462,6 +513,35 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+
+        <div className="col-sm-12 col-md-12 col-lg-12 grid-margin">
+          <div className="card-reg">
+            <div className="card-body-reg">
+              <h5>Unfreez Token</h5>
+              <div className="row">
+                <div className="col-sm-12 my-auto">
+                  <form className="forms-sample" onSubmit={handleSubmitUnfreez}>
+                    <div className="form-group w-100">
+                      <input
+                        className="btn mt-3 submitbtn_"
+                        type="submit"
+                        // disabled={loading}
+                        value=""
+                        style={{
+                          backgroundImage: `url(${logoImage})`, // Use the imported image
+                          backgroundSize: "cover", // Adjust background size if needed
+                          backgroundRepeat: "no-repeat", // Adjust background repeat if needed
+                          width: "100px",
+                          height: "100px",
+                        }}
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
