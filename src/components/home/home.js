@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { ICU, USDT } from "../../utils/web3.js";
 import { useParams } from "react-router-dom";
 import logoImage from "./../../assets/images/logo.png";
+import Footer from "./../Footer.js";
 
 const Dashboard = () => {
   window.Buffer = Buffer;
@@ -248,6 +249,18 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Account Address</h5>
+              <h4 className="mb-0 golden-text">
+                {account
+                  ? account
+                  : "0x0000000000000000000000000000000000000000"}
+              </h4>
+            </div>
+          </div>
+        </div>
 
         {/* token balance  */}
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
@@ -277,7 +290,7 @@ const Dashboard = () => {
             <div className="card-body">
               <h5>Get Next Reward</h5>
               <h4 className="mb-0 golden-text">
-                {getNextReward ? getNextReward : 0} NVP
+                {getNextReward ? getNextReward : 0} USDT
               </h4>
             </div>
           </div>
@@ -310,7 +323,7 @@ const Dashboard = () => {
             <div className="card-body">
               <h5>Token Reward </h5>
               <h4 className="mb-0 golden-text">
-                {tokenReward ? tokenReward : 0} NVP
+                {tokenReward ? tokenReward : 0} USDT
               </h4>
             </div>
           </div>
@@ -328,7 +341,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Sponsor</h5>
+              <h5>User Referrer ID </h5>
               <h4 className="mb-0 golden-text">
                 {userReferrerID ? userReferrerID : 0}{" "}
               </h4>
@@ -339,7 +352,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Direct</h5>
+              <h5>User Referred Users </h5>
               <h4 className="mb-0 golden-text">
                 {userReferredUsers ? userReferredUsers : 0}{" "}
               </h4>
@@ -350,7 +363,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Income </h5>
+              <h5>User Income </h5>
               <h4 className="mb-0 golden-text">
                 {userIncome ? userIncome : 0} USDT{" "}
               </h4>
@@ -361,7 +374,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Number Of Auto Pool Income</h5>
+              <h5>User Auto Pool Pay Received </h5>
               <h4 className="mb-0 golden-text">
                 {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
               </h4>
@@ -372,7 +385,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Missed Pool Payment </h5>
+              <h5>User Missed Pool Payment </h5>
               <h4 className="mb-0 golden-text">
                 {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
               </h4>
@@ -383,7 +396,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Autopool Pay Reciever</h5>
+              <h5>User Autopool Pay Reciever </h5>
               <h4 className="mb-0 golden-text">
                 {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
               </h4>
@@ -394,7 +407,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Number Of Level Income</h5>
+              <h5>User Level Income Received </h5>
               <h4 className="mb-0 golden-text">
                 {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
               </h4>
@@ -425,7 +438,7 @@ const Dashboard = () => {
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>Missed Level Income</h5>
+              <h5>User Income Missed </h5>
               <h4 className="mb-0 golden-text">
                 {userIncomeMissed ? userIncomeMissed : 0}{" "}
               </h4>
@@ -523,7 +536,7 @@ const Dashboard = () => {
                   <form className="forms-sample" onSubmit={handleSubmitUnfreez}>
                     <div className="form-group w-100">
                       <input
-                        className="btn mt-3 submitbtn_"
+                        className="btn mt-3 submitbtn1"
                         type="submit"
                         // disabled={loading}
                         value=""
@@ -543,6 +556,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,0 +1,285 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+@import "~bootstrap/scss/bootstrap";
+
+.home-container {
+  padding-top: 80px;
+}
+.custom-eventlist {
+  padding-top: 80px;
+}
+.card {
+  margin: 15px;
+  border: none;
+  border-radius: 15px;
+  // height: 80%;
+  h4 {
+    font-weight: bold;
+  }
+  .card-body {
+    border: none;
+    //color: #f3ad23;
+    color: #23f3a0;
+    padding: 1.75rem 1.5625rem;
+    background: #050505c7;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 30px 31px 33px rgb(8 14 35);
+  }
+  .card-body-stakes {
+    border: none;
+    //color: #f3ad23;
+    color: #23f3a0;
+    padding: 1.75rem 1.5625rem;
+    background: #26260dd0;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 30px 31px 33px rgb(8 14 35);
+  }
+}
+.css-11b3ww9-MuiPaper-root-MuiAppBar-root {
+  background-color: #050505d4 !important;
+}
+
+.container-scroller {
+  background-color: #dfe1e7;
+  // background-color: #0c2448;
+}
+.css-11b3ww9-MuiPaper-root-MuiAppBar-root {
+  button {
+    &:first-child {
+      color: #23def3 !important;
+    }
+    &:last-child {
+      color: #2f2f2f !important;
+      border: 2px solid #ffffff;
+      background-color: #23def3;
+    }
+  }
+}
+
+.form-control {
+  border: 1px solid #2c2e33;
+  height: calc(2.25rem + 2px);
+  font-weight: normal;
+  font-size: 0.875rem;
+  padding: 0.625rem 0.6875rem;
+  background-color: #0c2447;
+  border-radius: 2px;
+  color: #ffffff;
+}
+h4 {
+  padding: 10px;
+  margin: 10px;
+}
+
+.table {
+  color: #ffffff;
+}
+
+.event-custom-select {
+  .css-g1d714-ValueContainer {
+    padding-top: 10px !important;
+  }
+  .css-1hb7zxy-IndicatorsContainer {
+    position: absolute !important;
+    right: 0;
+    top: 0;
+  }
+  .css-b62m3t-container {
+    position: relative;
+    box-sizing: border-box;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.logo-img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+}
+.account_mob_ {
+  span {
+    font-size: 8px !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .user-detail-res {
+    .d-flex {
+      display: unset !important;
+      .heading_ {
+        font-weight: 800 !important;
+      }
+      h4 {
+        display: block !important;
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+.ref-btn {
+  // color: #23def3;
+  // background-color: #2f2f2f;
+
+  color: #2f2f2f !important;
+  border: 2px solid #ffffff;
+  background-color: #23def3;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 36px;
+  margin: 15px 0 15px 0;
+}
+.ref-btn-success {
+  color: #fff !important;
+  background-color: #077f03 !important;
+  padding: 12px 15px;
+  border-radius: 35px;
+  margin-left: 15px;
+}
+
+.submitbtn_ {
+  // color: #23def3;
+  color: #2f2f2f !important;
+  border: 2px solid #ffffff;
+  background-color: #23def3;
+  border-radius: 22px;
+  &:hover {
+    color: #2f2f2f !important;
+    border: 2px solid #ffffff;
+    background-color: #23def3;
+  }
+}
+
+
+  .submitbtn1 {
+    // color: #23def3;
+    color: #2f2f2f !important;
+    // border: 2px solid #ffffff;
+    // background-color: #23def3;
+    // border-radius: 22px;
+    &:hover {
+      color: #2f2f2f !important;
+      border: 2px solid #ffffff;
+    border-radius: 22px;
+
+      // background-color: #23def3;
+    }
+}
+
+.withdrwaroi {
+  // background-color: transparent;
+  // border: 2px solid #23def3;
+  // color: #23def3;
+
+  color: #2f2f2f !important;
+  border: 2px solid #ffffff;
+  background-color: #23def3;
+
+  border-radius: 60px;
+  padding: 10px 22px;
+}
+
+.css-4t3x6l-MuiPaper-root-MuiDrawer-paper {
+  background-color: #2f2f2f !important;
+}
+.css-10hburv-MuiTypography-root {
+  color: #23def3 !important;
+}
+
+.header_BTN {
+  background-color: "#23def3" !important;
+  color: "#2f2f2f" !important;
+  border-radius: "20px;" !important;
+}
+
+.h80 {
+  height: 80%;
+}
+.css-1bh4fj9 {
+  color: #23def3 !important;
+}
+
+nav {
+  background-color: #2f2f2f !important;
+  button {
+  }
+}
+.css-144j1un {
+  color: #2f2f2f !important;
+  border: 2px solid #ffffff !important;
+  background-color: #23def3 !important;
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* Ensure it's above other elements */
+}
+
+.loader-overlay div {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333; /* Adjust the text color as needed */
+}
+
+
+.card-body-reg {
+  border: none;
+  color: #23f3a0;
+  padding: 1.75rem 1.5625rem;
+  background: #172907cc;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 30px 31px 33px rgb(8 14 35);
+}
+
+
+.card-reg {
+  margin: 15px;
+  margin-left:20%;
+  margin-right: 20%;
+  border: none;
+  border-radius: 15px;
+
+
+  .card-body-reg {
+    border: none;
+    //color: #f3ad23;
+    color: #23f3a0;
+    padding: 1.75rem 1.5625rem;
+    background: #050505c7;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 30px 31px 33px rgb(8 14 35);
+  }
+}
+
+/* CSS */
+.golden-text {
+  color: gold;
+}
+.golden-textHeader{
+  color: gold;
+  text-decoration: none;
+  font-size: 16px; /* Adjust text size */
+  font-weight: bold; /* Make text bold */
+}
+/* Add additional styling as needed */
+
