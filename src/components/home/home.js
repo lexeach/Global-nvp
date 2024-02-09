@@ -4,7 +4,10 @@ import Web3 from "web3";
 import { ICU, USDT } from "../../utils/web3.js";
 import { useParams } from "react-router-dom";
 import logoImage from "./../../assets/images/logo.png";
-import Footer from "./../Footer.js";
+import Footer from "../Footer.js";
+import Logo1 from "./../../assets/images/logo-v1.jpeg";
+
+import Flowbite from "../Flowbit.js";
 
 const Dashboard = () => {
   window.Buffer = Buffer;
@@ -237,6 +240,17 @@ const Dashboard = () => {
   };
   return (
     <div className="home-container">
+      <div className="col-sm-12 grid-margin">
+        <div className="card">
+          <div className="card-body-v1 text-center">
+            {/* Write Functionality Is Below */}
+            <h5 className="mb-0 address-text">Account Address</h5>
+            <h4 className="mb-0 golden-text text-right">
+              {account ? account : "0x0000000000000000000000000000000000000000"}
+            </h4>
+          </div>
+        </div>
+      </div>
       <div className="row">
         {/* token balance  */}
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
@@ -245,18 +259,6 @@ const Dashboard = () => {
               <h5>Registration Fee</h5>
               <h4 className="mb-0 golden-text">
                 {registration_Free ? registration_Free : 0} USDT
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Account Address</h5>
-              <h4 className="mb-0 golden-text">
-                {account
-                  ? account
-                  : "0x0000000000000000000000000000000000000000"}
               </h4>
             </div>
           </div>
@@ -455,107 +457,125 @@ const Dashboard = () => {
         </div>
 
         {/* incomeMissed user  */}
+        <div className="row">
+          {!isExist ? (
+            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
+              <div className="card-reg">
+                <div className="card-body-reg">
+                  <h5>Registration</h5>
+                  <div className="row">
+                    <div className="col-sm-12 my-auto">
+                      <form className="forms-sample" onSubmit={handleSubmit}>
+                        <div className="form-group w-100 ">
+                          <input
+                            className="form-control mt-2"
+                            type="number"
+                            required
+                            name="id"
+                            onChange={handleChange}
+                            value={referrerId || ""}
+                            placeholder="Referral ID"
+                          />
+                          {/* Loader */}
 
-        {!isExist ? (
-          <div className="col-sm-12 col-md-12 col-lg-12 grid-margin">
-            <div className="card-reg">
-              <div className="card-body-reg">
-                <h5>Registration</h5>
-                <div className="row">
-                  <div className="col-sm-12 my-auto">
-                    <form className="forms-sample" onSubmit={handleSubmit}>
-                      <div className="form-group w-100">
-                        <input
-                          className="form-control mt-2"
-                          type="number"
-                          required
-                          name="id"
-                          onChange={handleChange}
-                          value={referrerId || ""}
-                          placeholder="Referral ID"
-                        />
-                        {/* Loader */}
-
-                        {loading && (
-                          <div className="loader-overlay">
-                            {" "}
-                            Transaction is Approving{" "}
-                          </div>
-                        )}
-                        <input
-                          className="btn mt-3 submitbtn_"
-                          type="submit"
-                          disabled={loading}
-                          value="Registration"
-                        />
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="col-sm-12 col-md-12 col-lg-12 grid-margin">
-            <div className="card-reg">
-              <div className="card-body-reg">
-                <h5>Copy Referral Link</h5>
-                <div className="row">
-                  <div className="col-sm-12 my-auto">
-                    <form className="forms-sample" onSubmit={handleCopied}>
-                      <div className="form-group w-100">
-                        <input
-                          className="form-control mt-2"
-                          type="text"
-                          value={generateReferralLink(currUserID)}
-                          readOnly
-                        />
-
-                        <button
-                          className="btn mt-3 submitbtn_"
-                          type="submit"
-                          // disabled={copied}
-                        >
-                          {copied ? "Copied!" : "Copy"}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="col-sm-12 col-md-12 col-lg-12 grid-margin">
-          <div className="card-reg">
-            <div className="card-body-reg">
-              <h5>Unfreez Token</h5>
-              <div className="row">
-                <div className="col-sm-12 my-auto">
-                  <form className="forms-sample" onSubmit={handleSubmitUnfreez}>
-                    <div className="form-group w-100">
-                      <input
-                        className="btn mt-3 submitbtn1"
-                        type="submit"
-                        // disabled={loading}
-                        value=""
-                        style={{
-                          backgroundImage: `url(${logoImage})`, // Use the imported image
-                          backgroundSize: "cover", // Adjust background size if needed
-                          backgroundRepeat: "no-repeat", // Adjust background repeat if needed
-                          width: "100px",
-                          height: "100px",
-                        }}
-                      />
+                          {loading && (
+                            <div className="loader-overlay">
+                              {" "}
+                              Transaction is Approving{" "}
+                            </div>
+                          )}
+                          <input
+                            className="btn mt-3 submitbtn_"
+                            type="submit"
+                            disabled={loading}
+                            value="Registration"
+                          />
+                        </div>
+                      </form>
                     </div>
-                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
+              <div className="card-reg">
+                <div className="card-body-reg">
+                  <h5 className="text-center">Copy Referral Link</h5>
+                  <div className="row">
+                    <div className="col-sm-12 my-auto">
+                      <form className="forms-sample" onSubmit={handleCopied}>
+                        <div className="form-group w-100">
+                          <input
+                            className="form-control mt-2"
+                            type="text"
+                            value={generateReferralLink(currUserID)}
+                            readOnly
+                          />
+
+                          <button
+                            className="btn mt-3 submitbtn_"
+                            type="submit"
+                            // disabled={copied}
+                          >
+                            {copied ? "Copied!" : "Copy"}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
+            <div className="card-reg">
+              <div className="card-body-reg">
+                <h5>Unfreez Token</h5>
+                <div className="row">
+                  <div className="col-sm-12 my-auto">
+                    <form
+                      className="forms-sample"
+                      onSubmit={handleSubmitUnfreez}
+                    >
+                      <div className="form-group w-100">
+                        <input
+                          className="btn mt-3 submitbtn1 text-center"
+                          type="submit"
+                          // disabled={loading}
+                          value=""
+                          style={{
+                            backgroundImage: `url(${logoImage})`, // Use the imported image
+                            backgroundSize: "cover", // Adjust background size if needed
+                            backgroundRepeat: "no-repeat", // Adjust background repeat if needed
+                            width: "100px",
+                            height: "100px",
+                          }}
+                        />
+                        <input
+                          className="btn mt-3 submitbtn1"
+                          type="submit"
+                          // disabled={loading}
+                          value=""
+                          style={{
+                            backgroundImage: `url(${Logo1})`, // Use the imported image
+                            backgroundSize: "cover", // Adjust background size if needed
+                            backgroundRepeat: "no-repeat", // Adjust background repeat if needed
+                            width: "100px",
+                            height: "100px",
+                          }}
+                        />
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );

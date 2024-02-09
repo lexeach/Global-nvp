@@ -26,6 +26,20 @@ function Footer() {
             </li>
           </ul>
         </div>
+        <div className="social-icons">
+          <a href="https://bscscan.com/address/0x57949388158dd8d2a790dbfc51cdf3caa265b64d/">
+            <i className="fab fa-facebook"></i> FaceBook
+          </a>
+          <a href="#">
+            <i className="fab fa-twitter"></i> Twitter
+          </a>
+          <a href="#">
+            <i className="fab fa-instagram"></i> Instagram
+          </a>
+          <a href="#">
+            <i className="fab fa-linkedin"></i> Linkedin
+          </a>
+        </div>
       </div>
       <p className="copy-right">© 2024 Your Website. All rights reserved.</p>
     </footer>

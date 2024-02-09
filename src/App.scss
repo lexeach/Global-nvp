@@ -15,6 +15,21 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+.card-body-v1 {
+  padding: 0.5rem 0.5rem;
+  background-color: #050505c7;
+  border-radius: 15px;
+  color: #23f3a0;
+}
+.address-text{
+  margin: 10px;
+  text-align: center; /* Align text to the right */
+}
+.text-right{
+  margin: 10px;
+  text-align: center; /* Align text to the right */
+}
 .card-body {
   padding: 1.75rem 1.5625rem;
   background-color: #050505c7;
@@ -84,7 +99,7 @@
 
 /* Additional Styles */
 .home-container {
-  padding-top: 80px;
+  padding-top: 20px;
   background-color: #dfe1e7;
 }
 
@@ -93,3 +108,17 @@
   width: 40px;
   border-radius: 50px;
 }
+
+// .submitbtn1 {
+//   /* Use multiple background images */
+//   background-image: url('./assets/images/logo.png'), url('./assets/images/logo-v1.jpeg');
+//   /* Adjust background size if needed */
+//  backgroundSize: "cover","cover";// Adjust background size if needed, auto;
+//   /* Adjust background repeat if needed */
+//   background-repeat: no-repeat, no-repeat;
+//   /* Adjust width and height as needed */
+//   width: 100px;
+//   height: 100px;
+//   /* Additional styling properties */
+//   /* Add other styling properties as needed */
+// }
