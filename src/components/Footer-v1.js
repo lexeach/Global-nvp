@@ -8,20 +8,20 @@ function Footer() {
         <div className="footer-menu">
           <ul>
             <li>
-              <a href="#">Home</a>
+              <a href="https://youtube.com">Youtube</a>
             </li>
             <li>
-              <a href="#">About</a>
+              <a href="https://facebook.com">Facebook</a>
             </li>
             <li>
-              <a href="#">Services</a>
+              <a href="https://telegram.com">Telegram</a>
             </li>
             <li>
-              <a href="#">Contact</a>
+              <a href="https://bscscan.com/address/0x3af2e4ecedc614d730c8113cd8fcced1e9bb4985#writeContract">NVP Contract</a>
             </li>
             <li>
               <a href="https://bscscan.com/address/0x57949388158dd8d2a790dbfc51cdf3caa265b64d/">
-                CBC
+                SWAP
               </a>
             </li>
           </ul>
