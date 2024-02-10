@@ -27,7 +27,7 @@ function Footer() {
           </ul>
         </div>
       </div>
-      <p className="copy-right">© 2024 Your Website. All rights reserved.</p>
+      <p className="copy-right">© 2024 Global NVP. All rights reserved.</p>
     </footer>
   );
 }
