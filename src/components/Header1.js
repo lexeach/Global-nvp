@@ -61,7 +61,7 @@ const DrawerAppBar = (props) => {
                   )
                 }
               >
-                CBC
+                SWAP
               </Button>
             </Box>
           ) : (
@@ -77,7 +77,7 @@ const DrawerAppBar = (props) => {
                   )
                 }
               >
-                CBC
+                SWAP
               </Button>
             </>
           )}
