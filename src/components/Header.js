@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css"; // Import CSS file for styling
 import Logo from "../assets/images/logo.png";
-import Logo1 from "../assets/images/logo-v1.jpeg";
+import Logo1 from "../assets/images/logo-v1.png";
 
 function Header() {
   const accountAddress = "0x123456789ABCDEF"; // Example wallet address

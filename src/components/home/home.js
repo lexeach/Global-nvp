@@ -5,7 +5,7 @@ import { ICU, USDT } from "../../utils/web3.js";
 import { useParams } from "react-router-dom";
 import logoImage from "./../../assets/images/logo.png";
 import Footer from "../Footer.js";
-import Logo1 from "./../../assets/images/logo-v1.jpeg";
+import Logo1 from "./../../assets/images/logo-v1.png";
 
 import Flowbite from "../Flowbit.js";
 
