@@ -1,542 +1,240 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Buffer } from "buffer";
 import Web3 from "web3";
 import { ICU, USDT } from "../../utils/web3.js";
-import { useParams } from "react-router-dom";
-import logoImage from "./../../assets/images/logo.png";
 import Footer from "../Footer.js";
-import Logo1 from "./../../assets/images/logo-v1.png";
-
-import Flowbite from "../Flowbit.js";
 
 const Dashboard = () => {
-  window.Buffer = Buffer;
+  // Polyfill Buffer for Web3
+  if (!window.Buffer) window.Buffer = Buffer;
 
+  const [account, setAccount] = useState("");
+  const [registration_Free, setRegistrationFee] = useState(0);
+  const [currUserID, setCurrUserID] = useState(0);
+  const [getNextReward, setGetNextReward] = useState(0);
+  const [level_income, setLevel_income] = useState(0);
+  const [tokenReward, setTokenReward] = useState(0);
+  const [tokenPrice, setTokenPrice] = useState(0);
+
+  const [userId, setUserId] = useState(0);
+  const [userReferrerID, setUserReferrerID] = useState(0);
+  const [userReferredUsers, setUserReferredUsers] = useState(0);
+  const [userIncome, setUserIncome] = useState(0);
+  const [userAutoPoolPayReceived, setUserAutoPoolPayReceived] = useState(0);
+  const [userMissedPoolPayment, setUserMissedPoolPayment] = useState(0);
+  const [userAutopoolPayReciever, setUserAutopoolPayReciever] = useState(0);
+  const [userLevelIncomeReceived, setUserLevelIncomeReceived] = useState(0);
+  const [userIncomeMissed, setUserIncomeMissed] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const [isExist, setIsExist] = useState(false);
+  const [rewardWin, setRewardWin] = useState(0);
+  const [regTime, setRegTime] = useState("");
+
+  const [referrerId, setReferrerId] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Initialize Web3
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
 
-  const [account, setAccount] = useState();
-  const [registration_Free, setRegistrationFee] = useState();
-  const [currUserID, setCurrUserID] = useState();
-  const [getNextReward, setGetNextReward] = useState();
-  const [level_income, setLevel_income] = useState();
-  const [tokenReward, setTokenReward] = useState();
-  const [tokenPrice, setTokenPrice] = useState();
-
-  const [userId, setUserId] = useState();
-  const [userReferrerID, setUserReferrerID] = useState();
-  const [userReferredUsers, setUserReferredUsers] = useState();
-  const [userIncome, setUserIncome] = useState();
-  const [userAutoPoolPayReceived, setUserAutoPoolPayReceived] = useState();
-  const [userMissedPoolPayment, setUserMissedPoolPayment] = useState();
-  const [userAutopoolPayReciever, setUserAutopoolPayReciever] = useState();
-  const [userLevelIncomeReceived, setUserLevelIncomeReceived] = useState();
-  const [userIncomeMissed, setUserIncomeMissed] = useState();
-  const [copied, setCopied] = useState(false);
-  const [isExist, setIsExist] = useState();
-  const [rewardWin, setRewardWin] = useState();
-  const [regTime, setRegTime] = useState();
-
-  const [referrerId, setReferrerId] = useState();
-
-  const [loading, setLoading] = useState(false);
-  // const { idFromUrl } = useParams(); // Assumes you are using React Router
-
-  useEffect(() => {
-    async function load() {
-      const accounts = await web3.eth.requestAccounts();
-      if (!accounts) {
-        alert("please install metamask");
-      }
-
-      setAccount(accounts[0]);
-      console.log("Account is ", account);
-      // let BEP20_ = new web3.eth.Contract(BEP20.ABI, BEP20.address);
-      let NEW_CBC_ROI = new web3.eth.Contract(ICU.ABI, ICU.address);
-      let RegistrationFee = await NEW_CBC_ROI.methods
-        .REGESTRATION_FESS()
-        .call();
-      console.log("Accounts of zero is :", accounts[0]);
-
-      const convert_regfee = Number(
-        web3.utils.fromWei(RegistrationFee, "ether")
-      ).toFixed(2);
-      setRegistrationFee(convert_regfee);
-      let currUserId = await NEW_CBC_ROI.methods.currUserID().call();
-
-      setCurrUserID(currUserId);
-      let nextRewared = await NEW_CBC_ROI.methods.getNextReward().call();
-
-      setGetNextReward(
-        Number(web3.utils.fromWei(nextRewared, "ether")).toFixed(2)
-      );
-
-      let levelIncome = await NEW_CBC_ROI.methods.level_income().call();
-
-      setLevel_income(
-        Number(web3.utils.fromWei(levelIncome, "ether")).toFixed(2)
-      );
-
-      let tokenPriceIs = await NEW_CBC_ROI.methods.tokenPrice().call();
-      setTokenPrice(
-        Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(2)
-      );
-
-      let winRewards = await NEW_CBC_ROI.methods.rewardWin(accounts[0]).call();
-      setRewardWin(Number(web3.utils.fromWei(winRewards, "ether")).toFixed(2));
-
-      let registTime = await NEW_CBC_ROI.methods.regTime(accounts[0]).call();
-      setRegTime(await epochToDate(registTime));
-
-      let tokenRewardIs = await NEW_CBC_ROI.methods.tokenReward().call();
-      setTokenReward(
-        Number(web3.utils.fromWei(tokenRewardIs, "ether")).toFixed(2)
-      );
-
-      let users = await NEW_CBC_ROI.methods.users(accounts[0]).call();
-      setIsExist(users.isExist);
-      setUserId(users.id);
-      setUserReferrerID(users.referrerID);
-      setUserReferredUsers(users.referredUsers);
-      setUserIncome(
-        Number(web3.utils.fromWei(users.income, "ether")).toFixed(2)
-      );
-      setUserAutoPoolPayReceived(users.autoPoolPayReceived);
-      setUserMissedPoolPayment(users.missedPoolPayment);
-      console.log("Its an autopool : ", users.autopoolPayReciever);
-      let userReceiver = await NEW_CBC_ROI.methods
-        .users(users.autopoolPayReciever)
-        .call();
-      setUserAutopoolPayReciever(userReceiver.id);
-      setUserLevelIncomeReceived(users.levelIncomeReceived);
-      setUserIncomeMissed(users.incomeMissed);
-    }
-
-    load();
-  }, []);
-
-  useEffect(() => {
-    const parsedUrl = new URL(window.location.href);
-    const id = parsedUrl.searchParams.get("id");
-    if (id != undefined) {
-      setReferrerId(id);
-    }
-  });
-
-  async function epochToDate(epochTime) {
-    // Convert epoch time to milliseconds (JavaScript uses milliseconds)
-    // Convert epoch to milliseconds
-    if (epochTime == undefined || Number(epochTime) <= 0) {
-      return "00/00/0000";
-    }
-    const milliseconds = epochTime * 1000;
-    console.log("millisecond:", milliseconds);
-    // Create a new Date object
-    const date = new Date(milliseconds);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Month is zero-based, so add 1
-    const year = date.getFullYear();
-
-    const formattedDate = `${day}/${month}/${year}`;
-
-    return formattedDate;
-  }
-  // handle change for registration
-  const handleChange = (event) => {
-    setReferrerId(event.target.value);
+  const epochToDate = (epochTime) => {
+    if (!epochTime || Number(epochTime) <= 0) return "00/00/0000";
+    const date = new Date(epochTime * 1000);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
-  // registration
+  const loadBlockchainData = useCallback(async () => {
+    try {
+      const accounts = await web3.eth.requestAccounts();
+      if (accounts.length === 0) {
+        alert("Please connect Metamask");
+        return;
+      }
+      const userAccount = accounts[0];
+      setAccount(userAccount);
+
+      const NEW_CBC_ROI = new web3.eth.Contract(ICU.ABI, ICU.address);
+      
+      // Batching calls or using Promise.all is faster
+      const regFee = await NEW_CBC_ROI.methods.REGESTRATION_FESS().call();
+      setRegistrationFee(web3.utils.fromWei(regFee, "ether"));
+
+      const currId = await NEW_CBC_ROI.methods.currUserID().call();
+      setCurrUserID(currId);
+
+      const nextRew = await NEW_CBC_ROI.methods.getNextReward().call();
+      setGetNextReward(Number(web3.utils.fromWei(nextRew, "ether")).toFixed(2));
+
+      const lIncome = await NEW_CBC_ROI.methods.level_income().call();
+      setLevel_income(Number(web3.utils.fromWei(lIncome, "ether")).toFixed(2));
+
+      const tPrice = await NEW_CBC_ROI.methods.tokenPrice().call();
+      setTokenPrice(Number(web3.utils.fromWei(tPrice, "ether")).toFixed(2));
+
+      const winRew = await NEW_CBC_ROI.methods.rewardWin(userAccount).call();
+      setRewardWin(Number(web3.utils.fromWei(winRew, "ether")).toFixed(2));
+
+      const rTime = await NEW_CBC_ROI.methods.regTime(userAccount).call();
+      setRegTime(epochToDate(rTime));
+
+      const tReward = await NEW_CBC_ROI.methods.tokenReward().call();
+      setTokenReward(Number(web3.utils.fromWei(tReward, "ether")).toFixed(2));
+
+      const userData = await NEW_CBC_ROI.methods.users(userAccount).call();
+      setIsExist(userData.isExist);
+      setUserId(userData.id);
+      setUserReferrerID(userData.referrerID);
+      setUserReferredUsers(userData.referredUsers);
+      setUserIncome(Number(web3.utils.fromWei(userData.income, "ether")).toFixed(2));
+      setUserAutoPoolPayReceived(userData.autoPoolPayReceived);
+      setUserMissedPoolPayment(userData.missedPoolPayment);
+      
+      const poolReceiverData = await NEW_CBC_ROI.methods.users(userData.autopoolPayReciever).call();
+      setUserAutopoolPayReciever(poolReceiverData.id);
+      setUserLevelIncomeReceived(userData.levelIncomeReceived);
+      setUserIncomeMissed(userData.incomeMissed);
+
+    } catch (error) {
+      console.error("Error loading blockchain data", error);
+    }
+  }, [web3]);
+
+  useEffect(() => {
+    loadBlockchainData();
+    
+    // Grab ID from URL once
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) setReferrerId(id);
+  }, [loadBlockchainData]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
-      let id = referrerId;
-      let amount = web3.utils.toWei(registration_Free, "ether"); // registration_Free; //web3.utils.toWei(amount, "ether")).toFixed(2) / 10000000000000000;
-      // console.log("Amount To Wei:", amount);
-      // if (id === "0") {
-      //   id = "50000";
-      // }
-      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
-      let USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
-      console.log("Allowance: ", ICU.address, account);
-      // let isAllowance = await USDT_.methods
-      //   .allowance(account, ICU.address)
-      //   .call();
-      let isAllowance = await USDTTest.methods
-        .allowance(account, ICU.address)
-        .call({ gas: 200000 });
-      let isApprove, reg_user;
-      if (isAllowance < amount) {
-        setLoading(true);
+      const amount = web3.utils.toWei(registration_Free.toString(), "ether");
+      const ICU_Contract = new web3.eth.Contract(ICU.ABI, ICU.address);
+      const USDT_Contract = new web3.eth.Contract(USDT.ABI, USDT.address);
 
-        isApprove = await USDTTest.methods
+      const allowance = await USDT_Contract.methods.allowance(account, ICU.address).call();
+
+      if (BigInt(allowance) < BigInt(amount)) {
+        await USDT_Contract.methods
           .approve(ICU.address, amount)
-          .send({ from: account })
-          .on("receipt", async function (receipt) {
-            setLoading(false);
+          .send({ from: account });
+      }
 
-            reg_user = await ICU_.methods
-              .Registration(id, amount)
-              .send({ from: account, value: 0 });
-            console.log("****** native coin accepting condtion", reg_user);
-            if (reg_user.status) {
-              alert("Registerd Success");
-            } else {
-              alert("Registerd Failed !!!!");
-            }
-          })
-          .on("error", function (error, receipt) {
-            // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-            setLoading(false);
-          });
-      } else {
-        reg_user = await ICU_.methods
-          .Registration(id, amount)
-          .send({ from: account, value: 0 });
-        console.log("****** native coin accepting condtion", reg_user);
-        if (reg_user.status) {
-          alert("Registerd Success");
-        } else {
-          alert("Registerd Failed !!!!");
-        }
+      const reg = await ICU_Contract.methods
+        .Registration(referrerId, amount)
+        .send({ from: account });
+
+      if (reg.status) {
+        alert("Registration Successful");
+        loadBlockchainData();
       }
     } catch (e) {
-      console.log("Error is :", e);
-      alert("Error is catched", e);
-    }
-  };
-  const handleSubmitUnfreez = async (event) => {
-    event.preventDefault();
-    try {
-      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
-      await ICU_.methods.unfreezeYourToken().send({ from: account });
-    } catch (e) {
-      console.log("Error is :", e);
-      alert("Error is catched", e);
+      console.error(e);
+      alert("Transaction failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const generateReferralLink = (id) => {
-    // Implement your logic to generate the referral link based on the provided ID
-    return `http://localhost:3000?id=${id}`;
-  };
-  const copyToClipboard = (text) => {
-    // Create a temporary textarea element to copy the text
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-  };
-  const handleCopied = (e) => {
+  const generateReferralLink = (id) => `${window.location.origin}?id=${id}`;
+
+  const handleCopied = async (e) => {
     e.preventDefault();
-
-    // Logic to copy the link
-    const referralLink = generateReferralLink(currUserID); // Implement your logic to generate the link
-    copyToClipboard(referralLink);
-
-    // Set the copied state to true
-    setCopied(true);
+    const link = generateReferralLink(currUserID);
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy!", err);
+    }
   };
+
   return (
     <div className="home-container">
       <div className="col-sm-12 grid-margin">
         <div className="card">
           <div className="card-body-v1 text-center">
-            {/* Write Functionality Is Below */}
             <h5 className="mb-0 address-text">Account Address</h5>
-            <h4 className="mb-0 golden-text text-right">
-              {account ? account : "0x0000000000000000000000000000000000000000"}
+            <h4 className="mb-0 golden-text">
+              {account || "0x0000000000000000000000000000000000000000"}
             </h4>
           </div>
         </div>
       </div>
+
       <div className="row">
-        {/* token balance  */}
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Registration Fee</h5>
-              <h4 className="mb-0 golden-text">
-                {registration_Free ? registration_Free : 0} USDT
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        {/* token balance  */}
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Direct Income</h5>
-              <h4 className="mb-0 golden-text">
-                {registration_Free ? registration_Free / 10 : 0} USDT
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Current User ID</h5>
-              <h4 className="mb-0 golden-text">
-                {currUserID ? currUserID : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Next Reward</h5>
-              <h4 className="mb-0 golden-text">
-                {getNextReward ? getNextReward : 0} NVP
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Level Income</h5>
-              <h4 className="mb-0 golden-text">
-                {level_income ? level_income : 0} USDT
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Token Price </h5>
-              <h4 className="mb-0 golden-text">
-                {tokenPrice ? tokenPrice : 0} USDT
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Token Reward </h5>
-              <h4 className="mb-0 golden-text">
-                {tokenReward ? tokenReward : 0} NVP
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>User ID </h5>
-              <h4 className="mb-0 golden-text">{userId ? userId : 0} </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Sponsor</h5>
-              <h4 className="mb-0 golden-text">
-                {userReferrerID ? userReferrerID : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Direct</h5>
-              <h4 className="mb-0 golden-text">
-                {userReferredUsers ? userReferredUsers : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Income </h5>
-              <h4 className="mb-0 golden-text">
-                {userIncome ? userIncome : 0} USDT{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Number Of Auto Pool Income</h5>
-              <h4 className="mb-0 golden-text">
-                {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Missed Pool Payment </h5>
-              <h4 className="mb-0 golden-text">
-                {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Autopool Pay Reciever </h5>
-              <h4 className="mb-0 golden-text">
-                {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Number Of Level Income</h5>
-              <h4 className="mb-0 golden-text">
-                {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Reward Win </h5>
-              <h4 className="mb-0 golden-text ">
-                {rewardWin ? rewardWin : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Registration Time </h5>
-              <h4 className="mb-0 golden-text">{regTime ? regTime : 0} </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Missed Level Income </h5>
-              <h4 className="mb-0 golden-text">
-                {userIncomeMissed ? userIncomeMissed : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body text-center">
-              Write Functionality Is Below
-            </div>
-          </div>
-        </div>
-
-        {/* incomeMissed user  */}
-        <div className="row">
-          {!isExist ? (
-            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
-              <div className="card-reg">
-                <div className="card-body-reg">
-                  <h5>Registration</h5>
-                  <div className="row">
-                    <div className="col-sm-12 my-auto">
-                      <form className="forms-sample" onSubmit={handleSubmit}>
-                        <div className="form-group w-100 ">
-                          <input
-                            className="form-control mt-2"
-                            type="number"
-                            required
-                            name="id"
-                            onChange={handleChange}
-                            value={referrerId || ""}
-                            placeholder="Referral ID"
-                          />
-                          {/* Loader */}
-
-                          {loading && (
-                            <div className="loader-overlay">
-                              {" "}
-                              Transaction is Approving{" "}
-                            </div>
-                          )}
-                          <input
-                            className="btn mt-3 submitbtn_"
-                            type="submit"
-                            disabled={loading}
-                            value="Registration"
-                          />
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
-              <div className="card-reg">
-                <div className="card-body-reg">
-                  <h5 className="text-center">Copy Referral Link</h5>
-                  <div className="row">
-                    <div className="col-sm-12 my-auto">
-                      <form className="forms-sample" onSubmit={handleCopied}>
-                        <div className="form-group w-100">
-                          <input
-                            className="form-control mt-2"
-                            type="text"
-                            value={generateReferralLink(currUserID)}
-                            readOnly
-                          />
-
-                          <button
-                            className="btn mt-3 submitbtn_"
-                            type="submit"
-                            // disabled={copied}
-                          >
-                            {copied ? "Copied!" : "Copy"}
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-                  </div>
-                </div>
+        {[
+          { label: "Registration Fee", value: `${registration_Free} USDT` },
+          { label: "Direct Income", value: `${registration_Free / 10} USDT` },
+          { label: "Current User ID", value: currUserID },
+          { label: "Next Reward", value: `${getNextReward} NVP` },
+          { label: "Level Income", value: `${level_income} USDT` },
+          { label: "Token Price", value: `${tokenPrice} USDT` },
+          { label: "Token Reward", value: `${tokenReward} NVP` },
+          { label: "User ID", value: userId },
+          { label: "Sponsor", value: userReferrerID },
+          { label: "Directs", value: userReferredUsers },
+          { label: "Income", value: `${userIncome} USDT` },
+          { label: "Auto Pool Count", value: userAutoPoolPayReceived },
+          { label: "Reward Win", value: rewardWin },
+          { label: "Reg Time", value: regTime },
+        ].map((item, idx) => (
+          <div key={idx} className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+            <div className="card">
+              <div className="card-body">
+                <h5>{item.label}</h5>
+                <h4 className="mb-0 golden-text">{item.value || 0}</h4>
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
 
+      <div className="row justify-content-center">
+        {!isExist ? (
+          <div className="col-md-6 grid-margin">
+            <div className="card-reg">
+              <div className="card-body-reg">
+                <h5>Registration</h5>
+                <form onSubmit={handleSubmit}>
+                  <input
+                    className="form-control mt-2"
+                    type="number"
+                    required
+                    value={referrerId}
+                    onChange={(e) => setReferrerId(e.target.value)}
+                    placeholder="Referral ID"
+                  />
+                  <button className="btn mt-3 submitbtn_" type="submit" disabled={loading}>
+                    {loading ? "Processing..." : "Register Now"}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="col-md-6 grid-margin">
+            <div className="card-reg">
+              <div className="card-body-reg text-center">
+                <h5>Your Referral Link</h5>
+                <input
+                  className="form-control mt-2"
+                  type="text"
+                  value={generateReferralLink(currUserID)}
+                  readOnly
+                />
+                <button className="btn mt-3 submitbtn_" onClick={handleCopied}>
+                  {copied ? "Copied!" : "Copy Link"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <Footer />
     </div>
   );
