@@ -189,18 +189,285 @@ const Dashboard = () => {
       <div className="col-sm-12 grid-margin">
         <div className="card">
           <div className="card-body-v1 text-center">
+            {/* Write Functionality Is Below */}
             <h5 className="mb-0 address-text">Account Address</h5>
             <h4 className="mb-0 golden-text text-right">
-              {account || "0x0000000000000000000000000000000000000000"}
+              {account ? account : "0x0000000000000000000000000000000000000000"}
             </h4>
           </div>
         </div>
       </div>
+      <div className="row">
+        {/* token balance  */}
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Registration Fee</h5>
+              <h4 className="mb-0 golden-text">
+                {registration_Free ? registration_Free : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
-      {/* ALL OTHER CARDS REMAIN SAME */}
+        {/* token balance  */}
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Direct Income</h5>
+              <h4 className="mb-0 golden-text">
+                {registration_Free ? registration_Free / 10 : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
-      {/* Reward Win Card ❌ REMOVED */}
-      {/* Unfreeze NVP Card ❌ REMOVED */}
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Current User ID</h5>
+              <h4 className="mb-0 golden-text">
+                {currUserID ? currUserID : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Next Reward</h5>
+              <h4 className="mb-0 golden-text">
+                {getNextReward ? getNextReward : 0} NVP
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Level Income</h5>
+              <h4 className="mb-0 golden-text">
+                {level_income ? level_income : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Token Price </h5>
+              <h4 className="mb-0 golden-text">
+                {tokenPrice ? tokenPrice : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Token Reward </h5>
+              <h4 className="mb-0 golden-text">
+                {tokenReward ? tokenReward : 0} NVP
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>User ID </h5>
+              <h4 className="mb-0 golden-text">{userId ? userId : 0} </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Sponsor</h5>
+              <h4 className="mb-0 golden-text">
+                {userReferrerID ? userReferrerID : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Direct</h5>
+              <h4 className="mb-0 golden-text">
+                {userReferredUsers ? userReferredUsers : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Income </h5>
+              <h4 className="mb-0 golden-text">
+                {userIncome ? userIncome : 0} USDT{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Number Of Auto Pool Income</h5>
+              <h4 className="mb-0 golden-text">
+                {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Missed Pool Payment </h5>
+              <h4 className="mb-0 golden-text">
+                {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Autopool Pay Reciever </h5>
+              <h4 className="mb-0 golden-text">
+                {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Number Of Level Income</h5>
+              <h4 className="mb-0 golden-text">
+                {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Registration Time </h5>
+              <h4 className="mb-0 golden-text">{regTime ? regTime : 0} </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Missed Level Income </h5>
+              <h4 className="mb-0 golden-text">
+                {userIncomeMissed ? userIncomeMissed : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body text-center">
+              Write Functionality Is Below
+            </div>
+          </div>
+        </div>
+
+        {/* incomeMissed user  */}
+        <div className="row">
+          {!isExist ? (
+            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
+              <div className="card-reg">
+                <div className="card-body-reg">
+                  <h5>Registration</h5>
+                  <div className="row">
+                    <div className="col-sm-12 my-auto">
+                      <form className="forms-sample" onSubmit={handleSubmit}>
+                        <div className="form-group w-100 ">
+                          <input
+                            className="form-control mt-2"
+                            type="number"
+                            required
+                            name="id"
+                            onChange={handleChange}
+                            value={referrerId || ""}
+                            placeholder="Referral ID"
+                          />
+                          {/* Loader */}
+
+                          {loading && (
+                            <div className="loader-overlay">
+                              {" "}
+                              Transaction is Approving{" "}
+                            </div>
+                          )}
+                          <input
+                            className="btn mt-3 submitbtn_"
+                            type="submit"
+                            disabled={loading}
+                            value="Registration"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
+              <div className="card-reg">
+                <div className="card-body-reg">
+                  <h5 className="text-center">Copy Referral Link</h5>
+                  <div className="row">
+                    <div className="col-sm-12 my-auto">
+                      <form className="forms-sample" onSubmit={handleCopied}>
+                        <div className="form-group w-100">
+                          <input
+                            className="form-control mt-2"
+                            type="text"
+                            value={generateReferralLink(currUserID)}
+                            readOnly
+                          />
+
+                          <button
+                            className="btn mt-3 submitbtn_"
+                            type="submit"
+                            // disabled={copied}
+                          >
+                            {copied ? "Copied!" : "Copy"}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          
+        </div>
+      </div>
 
       <Footer />
     </div>
