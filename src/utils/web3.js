@@ -1,6 +1,6 @@
 module.exports = {
   ICU: {
-    address: "0x4394Ed70D5bD079FF83d1AFA7BC08a33F667FAc2",
+    address: "0xEf97a6D98cEa3C8c7d632D500587B8d2Eb1500C5",
     ABI: [
       {
         inputs: [
@@ -366,7 +366,7 @@ module.exports = {
     ],
   },
   BEP20: {
-    address: "0x072178f8229d19a3517f439bc9ba23a29d3eb649",
+    address: "0x0x22594193A4Dffcc6dEadAE11BBd3e86A7a6dF0d0",
     ABI: [
       { inputs: [], stateMutability: "nonpayable", type: "constructor" },
       {
@@ -727,7 +727,7 @@ module.exports = {
     ],
   },
   USDT: {
-    address: "0x55d398326f99059ff775485246999027b3197955",
+    address: "0x0EB11261F9F778fEfd688e2dfAdB77862E96605b",
     ABI: [
       { inputs: [], stateMutability: "nonpayable", type: "constructor" },
       {
