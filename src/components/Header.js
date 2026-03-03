@@ -23,7 +23,7 @@ function Header() {
           style={{ height: "50px", width: "50px" }}
         />
         {"         "}
-        GLOBAL NVP
+        EXPONA COIN
       </div>
     </header>
   );
