@@ -529,45 +529,6 @@ const Dashboard = () => {
             </div>
           )}
 
-          <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
-            <div className="card-reg">
-              <div className="card-body-reg">
-                <h5>Unfreeze NVP</h5>
-                <div className="row">
-                  <div className="col-sm-12 my-auto">
-                    <form
-                      className="forms-sample"
-                      onSubmit={handleSubmitUnfreez}
-                    >
-                      <div className="form-group w-100">
-                        <input
-                          className="btn mt-3 submitbtn1 text-center"
-                          type="submit"
-                          // disabled={loading}
-                          value=""
-                          style={{
-                            backgroundImage: `url(${logoImage})`, // Use the imported image
-                            backgroundSize: "cover", // Adjust background size if needed
-                            backgroundRepeat: "no-repeat", // Adjust background repeat if needed
-                            width: "100px",
-                            height: "100px",
-                          }}
-                        />
-                        <input
-                          className="btn mt-3 submitbtn1"
-                          type="submit"
-                          // disabled={loading}
-                          value=""
-                          style={{
-                            backgroundImage: `url(${Logo1})`, // Use the imported image
-                            backgroundSize: "cover", // Adjust background size if needed
-                            backgroundRepeat: "no-repeat", // Adjust background repeat if needed
-                            width: "100px",
-                            height: "100px",
-                          }}
-                        />
-                      </div>
-                    </form>
                   </div>
                 </div>
               </div>
