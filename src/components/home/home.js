@@ -357,76 +357,76 @@ const Dashboard = () => {
         </div>
 
         {/* incomeMissed user  */}
-        <div className="row">
-          {!isExist ? (
-            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
-              <div className="card-reg">
-                <div className="card-body-reg">
-                  <h5>Registration</h5>
-                  <div className="row">
-                    <div className="col-sm-12 my-auto">
-                      <form className="forms-sample" onSubmit={handleSubmit}>
-                        <div className="form-group w-100 ">
-                          <input
-                            className="form-control mt-2"
-                            type="number"
-                            required
-                            name="id"
-                            onChange={handleChange}
-                            value={referrerId || ""}
-                            placeholder="Referral ID"
-                          />
-                          {/* Loader */}
+        <div className="row justify-content-center">
+  {!isExist ? (
+    <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
+      <div className="card-reg">
+        <div className="card-body-reg">
+          <h5 className="text-center">Registration</h5>
 
-                          {loading && (
-                            <div className="loader-overlay">
-                              {" "}
-                              Transaction is Approving{" "}
-                            </div>
-                          )}
-                          <input
-                            className="btn mt-3 submitbtn_"
-                            type="submit"
-                            disabled={loading}
-                            value="Registration"
-                          />
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="col-sm-12 col-md-6 col-lg-6 grid-margin">
-              <div className="card-reg">
-                <div className="card-body-reg">
-                  <h5 className="text-center">Copy Referral Link</h5>
-                  <div className="row">
-                    <div className="col-sm-12 my-auto">
-                      <form className="forms-sample" onSubmit={handleCopied}>
-                        <div className="form-group w-100">
-                          <input
-                            className="form-control mt-2"
-                            type="text"
-                            value={generateReferralLink(currUserID)}
-                            readOnly
-                          />
+          <div className="row">
+            <div className="col-sm-12 my-auto">
+              <form className="forms-sample" onSubmit={handleSubmit}>
+                <div className="form-group w-100 ">
+                  <input
+                    className="form-control mt-2"
+                    type="number"
+                    required
+                    name="id"
+                    onChange={handleChange}
+                    value={referrerId || ""}
+                    placeholder="Referral ID"
+                  />
 
-                          <button
-                            className="btn mt-3 submitbtn_"
-                            type="submit"
-                            // disabled={copied}
-                          >
-                            {copied ? "Copied!" : "Copy"}
-                          </button>
-                        </div>
-                      </form>
+                  {loading && (
+                    <div className="loader-overlay">
+                      Transaction is Approving
                     </div>
-                  </div>
+                  )}
+
+                  <input
+                    className="btn mt-3 submitbtn_ w-100"
+                    type="submit"
+                    disabled={loading}
+                    value="Registration"
+                  />
                 </div>
-              </div>
+              </form>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
+      <div className="card-reg">
+        <div className="card-body-reg">
+          <h5 className="text-center">Copy Referral Link</h5>
+
+          <div className="row">
+            <div className="col-sm-12 my-auto">
+              <form className="forms-sample" onSubmit={handleCopied}>
+                <div className="form-group w-100">
+                  <input
+                    className="form-control mt-2"
+                    type="text"
+                    value={generateReferralLink(currUserID)}
+                    readOnly
+                  />
+
+                  <button
+                    className="btn mt-3 submitbtn_ w-100"
+                    type="submit"
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
           )}
 
           
