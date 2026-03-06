@@ -25,10 +25,10 @@ const Dashboard = () => {
   const [userReferredUsers, setUserReferredUsers] = useState();
   const [userIncome, setUserIncome] = useState();
   const [userAutoPoolPayReceived, setUserAutoPoolPayReceived] = useState();
-  const [userMissedPoolPayment, setUserMissedPoolPayment] = useState();
+  //const [userMissedPoolPayment, setUserMissedPoolPayment] = useState();
   const [userAutopoolPayReciever, setUserAutopoolPayReciever] = useState();
   const [userLevelIncomeReceived, setUserLevelIncomeReceived] = useState();
-  const [userIncomeMissed, setUserIncomeMissed] = useState();
+  //const [userIncomeMissed, setUserIncomeMissed] = useState();
   const [copied, setCopied] = useState(false);
   const [isExist, setIsExist] = useState();
   const [regTime, setRegTime] = useState();
@@ -88,7 +88,7 @@ const Dashboard = () => {
         Number(web3.utils.fromWei(users.income, "ether")).toFixed(2)
       );
       setUserAutoPoolPayReceived(users.autoPoolPayReceived);
-      setUserMissedPoolPayment(users.missedPoolPayment);
+    //  setUserMissedPoolPayment(users.missedPoolPayment);
 
       let userReceiver = await NEW_CBC_ROI.methods
         .users(users.autopoolPayReciever)
@@ -96,7 +96,7 @@ const Dashboard = () => {
 
       setUserAutopoolPayReciever(userReceiver.id);
       setUserLevelIncomeReceived(users.levelIncomeReceived);
-      setUserIncomeMissed(users.incomeMissed);
+      //setUserIncomeMissed(users.incomeMissed);
     }
 
     load();
@@ -330,16 +330,16 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Missed Pool Payment </h5>
-              <h4 className="mb-0 golden-text">
-                {userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
+        //<div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          //<div className="card">
+            //<div className="card-body">
+              //<h5>Missed Pool Payment </h5>
+              //<h4 className="mb-0 golden-text">
+                //{userMissedPoolPayment ? userMissedPoolPayment : 0}{" "}
+              //</h4>
+            //</div>
+          //</div>
+        //</div>
 
         <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           <div className="card">
@@ -373,16 +373,16 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Missed Level Income </h5>
-              <h4 className="mb-0 golden-text">
-                {userIncomeMissed ? userIncomeMissed : 0}{" "}
-              </h4>
-            </div>
-          </div>
-        </div>
+        //<div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          //<div className="card">
+            //<div className="card-body">
+              //<h5>Missed Level Income </h5>
+              //<h4 className="mb-0 golden-text">
+                //{userIncomeMissed ? userIncomeMissed : 0}{" "}
+              //</h4>
+            //</div>
+          //</div>
+        //</div>
 
         <div className="col-sm-12 grid-margin">
           <div className="card">
