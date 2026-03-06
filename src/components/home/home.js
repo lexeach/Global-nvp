@@ -31,7 +31,7 @@ const Dashboard = () => {
   //const [userIncomeMissed, setUserIncomeMissed] = useState();
   const [copied, setCopied] = useState(false);
   const [isExist, setIsExist] = useState();
-  const [regTime, setRegTime] = useState();
+  //const [regTime, setRegTime] = useState();
   const [referrerId, setReferrerId] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -67,11 +67,11 @@ const Dashboard = () => {
 
       let tokenPriceIs = await NEW_CBC_ROI.methods.tokenPrice().call();
       setTokenPrice(
-        Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(2)
+        Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(4)
       );
 
-      let registTime = await NEW_CBC_ROI.methods.regTime(accounts[0]).call();
-      setRegTime(await epochToDate(registTime));
+     // let registTime = await NEW_CBC_ROI.methods.regTime(accounts[0]).call();
+      //setRegTime(await epochToDate(registTime));
 
       let tokenRewardIs = await NEW_CBC_ROI.methods.tokenReward().call();
       setTokenReward(
@@ -364,14 +364,14 @@ const Dashboard = () => {
         </div>
 
         
-        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-          <div className="card">
-            <div className="card-body">
-              <h5>Registration Time </h5>
-              <h4 className="mb-0 golden-text">{regTime ? regTime : 0} </h4>
-            </div>
-          </div>
-        </div>
+       // <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+         // <div className="card">
+           // <div className="card-body">
+             // <h5>Registration Time </h5>
+              //<h4 className="mb-0 golden-text">{regTime ? regTime : 0} </h4>
+            //</div>
+          //</div>
+        //</div>
 
         //<div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
           //<div className="card">
