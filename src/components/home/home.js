@@ -112,50 +112,51 @@ const Dashboard = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      let id = referrerId;
-      let amount = web3.utils.toWei(registration_Free, "ether");
+  event.preventDefault();
+  try {
+    setLoading(true); // Start loading immediately
+    
+    let id = referrerId;
+    // Ensure registration_Free is a string to avoid scientific notation errors
+    let amount = web3.utils.toWei(registration_Free.toString(), "ether");
 
-      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
-      let USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
+    let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
+    let USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
 
-      let isAllowance = await USDTTest.methods
-        .allowance(account, ICU.address)
-        .call({ gas: 200000 });
+    // 1. Check Allowance
+    let isAllowance = await USDTTest.methods
+      .allowance(account, ICU.address)
+      .call();
 
-      let reg_user;
-
-      if (isAllowance < amount) {
-        setLoading(true);
-
-        await USDTTest.methods
-          .approve(ICU.address, amount)
-          .send({ from: account })
-          .on("receipt", async function () {
-            setLoading(false);
-
-            reg_user = await ICU_.methods
-              .Registration(id, amount)
-              .send({ from: account, value: 0 });
-
-            alert(reg_user.status ? "Registerd Success" : "Registerd Failed !!!!");
-          })
-          .on("error", function () {
-            setLoading(false);
-          });
-      } else {
-        reg_user = await ICU_.methods
-          .Registration(id, amount)
-          .send({ from: account, value: 0 });
-
-        alert(reg_user.status ? "Registerd Success" : "Registerd Failed !!!!");
-      }
-    } catch (e) {
-      console.log("Error is :", e);
-      alert("Error occurred");
+    // 2. Compare using BigInt to avoid precision errors
+    if (BigInt(isAllowance) < BigInt(amount)) {
+      // 3. Request Approval
+      await USDTTest.methods
+        .approve(ICU.address, amount)
+        .send({ from: account });
+      
+      // Optional: Add a small delay or notification here if needed
     }
-  };
+
+    // 4. Execute Registration (This runs if allowance was already enough OR after approval)
+    const reg_user = await ICU_.methods
+      .Registration(id, amount)
+      .send({ from: account, value: 0 });
+
+    if (reg_user.status) {
+      alert("Registered Success");
+    } else {
+      alert("Registered Failed !!!!");
+    }
+
+  } catch (e) {
+    console.error("Error is :", e);
+    // Extracting a cleaner error message for the user
+    alert(e.message || "An error occurred during transaction");
+  } finally {
+    setLoading(false); // Ensure loading stops regardless of success or error
+  }
+};
 
   const generateReferralLink = (id) => {
     return `http://localhost:3000?id=${id}`;
