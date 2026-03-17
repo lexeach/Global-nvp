@@ -7,7 +7,7 @@ import Footer from "../Footer.js";
 // Ensure Buffer is available globally for Web3/Blockchain libraries
 window.Buffer = Buffer;
 
-// Initialize Web3 outside the component to prevent recreation on every render
+// Initialize Web3 outside to prevent recreation on every render
 const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
 
 const Dashboard = () => {
@@ -41,12 +41,12 @@ const Dashboard = () => {
           alert("Please install or unlock MetaMask");
           return;
         }
-        setAccount(accounts[0]);
+        const userAccount = accounts[0];
+        setAccount(userAccount);
 
         const contract = new web3.eth.Contract(ICU.ABI, ICU.address);
 
         // Fetch Global Data
-        // Note: Check if "REGESTRATION_FESS" is the correct spelling in your Solidity contract
         const regFee = await contract.methods.REGESTRATION_FESS().call();
         setRegistrationFee(web3.utils.fromWei(regFee, "ether"));
 
@@ -66,7 +66,7 @@ const Dashboard = () => {
         setTokenReward(Number(web3.utils.fromWei(reward, "ether")).toFixed(2));
 
         // Fetch User Data
-        const userData = await contract.methods.users(accounts[0]).call();
+        const userData = await contract.methods.users(userAccount).call();
         setIsExist(userData.isExist);
         setUserId(userData.id);
         setUserReferrerID(userData.referrerID);
@@ -84,7 +84,7 @@ const Dashboard = () => {
       }
     }
     loadData();
-  }, [account]);
+  }, []); // Run once on mount
 
   const handleChange = (event) => {
     setReferrerId(event.target.value);
@@ -100,14 +100,12 @@ const Dashboard = () => {
       const icuContract = new web3.eth.Contract(ICU.ABI, ICU.address);
       const usdtContract = new web3.eth.Contract(USDT.ABI, USDT.address);
 
-      // Check Allowance
       const allowance = await usdtContract.methods.allowance(account, ICU.address).call();
 
       if (BigInt(allowance) < BigInt(amount)) {
         await usdtContract.methods.approve(ICU.address, amount).send({ from: account });
       }
 
-      // Execute Registration
       const receipt = await icuContract.methods
         .Registration(referrerId, amount)
         .send({ from: account });
@@ -125,7 +123,7 @@ const Dashboard = () => {
 
   const handleCopied = (e) => {
     e.preventDefault();
-    const link = generateReferralLink(userId); // Usually better to use the User's own ID
+    const link = generateReferralLink(userId);
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -145,7 +143,6 @@ const Dashboard = () => {
       </div>
 
       <div className="row">
-        {/* Metric Cards */}
         {[
           { label: "Registration Fee", value: `${registration_Free} USDT` },
           { label: "Direct Income", value: `${registration_Free / 10} USDT` },
