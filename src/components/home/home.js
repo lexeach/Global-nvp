@@ -2,232 +2,199 @@ import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import Web3 from "web3";
 import { ICU, USDT } from "../../utils/web3.js";
+import logoImage from "./../../assets/images/logo.png";
 import Footer from "../Footer.js";
-
-// Ensure Buffer is available globally for Web3/Blockchain libraries
-if (typeof window !== "undefined") {
-  window.Buffer = window.Buffer || Buffer;
-}
-
-// Initialize Web3 outside to prevent recreation on every render
-const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
+import Logo1 from "./../../assets/images/logo-v1.png";
+import Flowbite from "../Flowbit.js";
 
 const Dashboard = () => {
+  window.Buffer = Buffer;
 
-  // State Management
-  const [account, setAccount] = useState("");
-  const [registration_Free, setRegistrationFee] = useState(0);
-  const [currUserID, setCurrUserID] = useState(0);
-  const [getNextReward, setGetNextReward] = useState(0);
-  const [level_income, setLevel_income] = useState(0);
-  const [tokenReward, setTokenReward] = useState(0);
-  const [tokenPrice, setTokenPrice] = useState(0);
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
 
-  const [userId, setUserId] = useState(0);
-  const [userReferrerID, setUserReferrerID] = useState(0);
-  const [userReferredUsers, setUserReferredUsers] = useState(0);
-  const [userIncome, setUserIncome] = useState(0);
-  const [userAutoPoolPayReceived, setUserAutoPoolPayReceived] = useState(0);
-  const [userAutopoolPayReciever, setUserAutopoolPayReciever] = useState(0);
-  const [userLevelIncomeReceived, setUserLevelIncomeReceived] = useState(0);
+  const [account, setAccount] = useState();
+  const [registration_Free, setRegistrationFee] = useState();
+  const [currUserID, setCurrUserID] = useState();
+  const [getNextReward, setGetNextReward] = useState();
+  const [level_income, setLevel_income] = useState();
+  const [tokenReward, setTokenReward] = useState();
+  const [tokenPrice, setTokenPrice] = useState();
 
+  const [userId, setUserId] = useState();
+  const [userReferrerID, setUserReferrerID] = useState();
+  const [userReferredUsers, setUserReferredUsers] = useState();
+  const [userIncome, setUserIncome] = useState();
+  const [userAutoPoolPayReceived, setUserAutoPoolPayReceived] = useState();
+  const [userAutopoolPayReciever, setUserAutopoolPayReciever] = useState();
+  const [userLevelIncomeReceived, setUserLevelIncomeReceived] = useState();
   const [copied, setCopied] = useState(false);
-  const [isExist, setIsExist] = useState(false);
-  const [referrerId, setReferrerId] = useState("");
+  const [isExist, setIsExist] = useState();
+  const [referrerId, setReferrerId] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-
-    async function loadData() {
-      try {
-
-        const accounts = await web3.eth.requestAccounts();
-
-        if (!accounts || accounts.length === 0) {
-          alert("Please install or unlock MetaMask");
-          return;
-        }
-
-        const userAccount = accounts[0];
-        setAccount(userAccount);
-
-        const contract = new web3.eth.Contract(ICU.ABI, ICU.address);
-
-        // Fetch Global Data
-        const regFee = await contract.methods.REGESTRATION_FESS().call();
-        setRegistrationFee(web3.utils.fromWei(regFee, "ether"));
-
-        const currentId = await contract.methods.currUserID().call();
-        setCurrUserID(currentId);
-
-        const nextRew = await contract.methods.getNextReward().call();
-        setGetNextReward(Number(web3.utils.fromWei(nextRew, "ether")).toFixed(2));
-
-        const lvlInc = await contract.methods.level_income().call();
-        setLevel_income(Number(web3.utils.fromWei(lvlInc, "ether")).toFixed(2));
-
-        const price = await contract.methods.tokenPrice().call();
-        setTokenPrice(Number(web3.utils.fromWei(price, "ether")).toFixed(4));
-
-        const reward = await contract.methods.tokenReward().call();
-        setTokenReward(Number(web3.utils.fromWei(reward, "ether")).toFixed(2));
-
-        // Fetch User Data
-        const userData = await contract.methods.users(userAccount).call();
-
-        setIsExist(userData.isExist);
-        setUserId(userData.id);
-        setUserReferrerID(userData.referrerID);
-        setUserReferredUsers(userData.referredUsers);
-        setUserIncome(Number(web3.utils.fromWei(userData.income, "ether")).toFixed(2));
-        setUserAutoPoolPayReceived(userData.autoPoolPayReceived);
-        setUserLevelIncomeReceived(userData.levelIncomeReceived);
-
-        if (
-          userData.autopoolPayReciever !==
-          "0x0000000000000000000000000000000000000000"
-        ) {
-          const receiverData = await contract.methods
-            .users(userData.autopoolPayReciever)
-            .call();
-
-          setUserAutopoolPayReciever(receiverData.id);
-        }
-
-      } catch (error) {
-        console.error("Error loading Web3 data:", error);
+    async function load() {
+      const accounts = await web3.eth.requestAccounts();
+      if (!accounts) {
+        alert("please install metamask");
       }
+
+      setAccount(accounts[0]);
+
+      let NEW_CBC_ROI = new web3.eth.Contract(ICU.ABI, ICU.address);
+
+      let RegistrationFee = await NEW_CBC_ROI.methods.REGESTRATION_FESS().call();
+      const convert_regfee = Number(
+        web3.utils.fromWei(RegistrationFee, "ether")
+      ).toFixed(2);
+      setRegistrationFee(convert_regfee);
+
+      let currUserId = await NEW_CBC_ROI.methods.currUserID().call();
+      setCurrUserID(currUserId);
+
+      let nextRewared = await NEW_CBC_ROI.methods.getNextReward().call();
+      setGetNextReward(
+        Number(web3.utils.fromWei(nextRewared, "ether")).toFixed(2)
+      );
+
+      let levelIncome = await NEW_CBC_ROI.methods.level_income().call();
+      setLevel_income(
+        Number(web3.utils.fromWei(levelIncome, "ether")).toFixed(2)
+      );
+
+      let tokenPriceIs = await NEW_CBC_ROI.methods.tokenPrice().call();
+      setTokenPrice(
+        Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(4)
+      );
+
+      let tokenRewardIs = await NEW_CBC_ROI.methods.tokenReward().call();
+      setTokenReward(
+        Number(web3.utils.fromWei(tokenRewardIs, "ether")).toFixed(2)
+      );
+
+      let users = await NEW_CBC_ROI.methods.users(accounts[0]).call();
+
+      setIsExist(users.isExist);
+      setUserId(users.id);
+      setUserReferrerID(users.referrerID);
+      setUserReferredUsers(users.referredUsers);
+      setUserIncome(
+        Number(web3.utils.fromWei(users.income, "ether")).toFixed(2)
+      );
+      setUserAutoPoolPayReceived(users.autoPoolPayReceived);
+
+      let userReceiver = await NEW_CBC_ROI.methods
+        .users(users.autopoolPayReciever)
+        .call();
+
+      setUserAutopoolPayReciever(userReceiver.id);
+      setUserLevelIncomeReceived(users.levelIncomeReceived);
     }
 
-    loadData();
-
-  }, []); // Run once on mount
-
+    load();
+  }, []);
 
   const handleChange = (event) => {
     setReferrerId(event.target.value);
   };
 
+  /* ===========================
+     FIXED REGISTRATION FUNCTION
+     =========================== */
 
   const handleSubmit = async (event) => {
-
     event.preventDefault();
 
-    if (!referrerId) return alert("Please enter a Referrer ID");
-
     try {
+      if (!account) {
+        alert("Wallet not connected");
+        return;
+      }
+
+      if (!referrerId) {
+        alert("Please enter Referral ID");
+        return;
+      }
 
       setLoading(true);
 
+      const ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
+      const USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
+
       const amount = web3.utils.toWei(registration_Free.toString(), "ether");
 
-      const icuContract = new web3.eth.Contract(ICU.ABI, ICU.address);
-      const usdtContract = new web3.eth.Contract(USDT.ABI, USDT.address);
-
-      const allowance = await usdtContract.methods
+      const allowance = await USDTTest.methods
         .allowance(account, ICU.address)
         .call();
 
-      if (BigInt(allowance) < BigInt(amount)) {
-        await usdtContract.methods
+      // approve if allowance insufficient
+      if (web3.utils.toBN(allowance).lt(web3.utils.toBN(amount))) {
+        await USDTTest.methods
           .approve(ICU.address, amount)
           .send({ from: account });
       }
 
-      const receipt = await icuContract.methods
-        .Registration(referrerId, amount)
+      const reg_user = await ICU_.methods
+        .Registration(Number(referrerId), amount)
         .send({ from: account });
 
-      alert(receipt.status ? "Registered Successfully!" : "Registration Failed!");
-
-    } catch (error) {
-
-      console.error("Transaction Error:", error);
-      alert(error.message || "An error occurred");
-
-    } finally {
       setLoading(false);
+
+      if (reg_user.status) {
+        alert("Registered Successfully");
+        window.location.reload();
+      } else {
+        alert("Registration Failed");
+      }
+
+    } catch (e) {
+      console.log("Error is :", e);
+      setLoading(false);
+      alert(e?.message || "Error occurred");
     }
   };
-
 
   const generateReferralLink = (id) => {
     return `http://localhost:3000?id=${id}`;
   };
 
-
-  const handleCopied = (e) => {
-
-    e.preventDefault();
-
-    const link = generateReferralLink(userId);
-
-    navigator.clipboard.writeText(link);
-
-    setCopied(true);
-
-    setTimeout(() => setCopied(false), 2000);
+  const copyToClipboard = (text) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
   };
 
+  const handleCopied = (e) => {
+    e.preventDefault();
+    const referralLink = generateReferralLink(currUserID);
+    copyToClipboard(referralLink);
+    setCopied(true);
+  };
 
   return (
-
     <div className="home-container">
 
+      {/* ACCOUNT ADDRESS */}
       <div className="col-sm-12 grid-margin">
         <div className="card">
           <div className="card-body-v1 text-center">
-
             <h5 className="mb-0 address-text">Account Address</h5>
-
-            <h4 className="mb-0 golden-text">
-              {account || "0x0000000000000000000000000000000000000000"}
+            <h4 className="mb-0 golden-text text-right">
+              {account ? account : "0x0000000000000000000000000000000000000000"}
             </h4>
-
           </div>
         </div>
       </div>
 
-
-      <div className="row">
-
-        {[
-          { label: "Registration Fee", value: `${registration_Free} USDT` },
-          { label: "Direct Income", value: `${Number(registration_Free) / 10} USDT` },
-          { label: "Current User ID", value: currUserID },
-          { label: "Next Reward", value: `${getNextReward} NVP` },
-          { label: "Level Income", value: `${level_income} USDT` },
-          { label: "Token Price", value: `${tokenPrice} USDT` },
-          { label: "User ID", value: userId },
-          { label: "Sponsor", value: userReferrerID },
-          { label: "Directs", value: userReferredUsers },
-          { label: "Total Income", value: `${userIncome} USDT` }
-        ].map((item, index) => (
-
-          <div key={index} className="col-lg-4 col-md-6 col-sm-12 grid-margin">
-
-            <div className="card">
-              <div className="card-body">
-
-                <h5>{item.label}</h5>
-                <h4 className="mb-0 golden-text">{item.value || 0}</h4>
-
-              </div>
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
+      {/* REGISTRATION SECTION */}
 
       <div className="row justify-content-center">
 
         {!isExist ? (
-
           <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
-
             <div className="card-reg">
               <div className="card-body-reg">
 
@@ -239,62 +206,56 @@ const Dashboard = () => {
                     className="form-control mt-2"
                     type="number"
                     required
-                    placeholder="Referrer ID"
-                    value={referrerId}
+                    name="id"
                     onChange={handleChange}
+                    value={referrerId || ""}
+                    placeholder="Referral ID"
                   />
 
                   {loading && (
-                    <div className="loader-text">
-                      Processing Transaction...
+                    <div className="loader-overlay">
+                      Transaction Processing...
                     </div>
                   )}
 
-                  <button
+                  <input
                     className="btn mt-3 submitbtn_ w-100"
                     type="submit"
                     disabled={loading}
-                  >
-                    {loading ? "Approving..." : "Register Now"}
+                    value="Registration"
+                  />
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+        ) : (
+
+          <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
+            <div className="card-reg">
+              <div className="card-body-reg">
+
+                <h5 className="text-center">Copy Referral Link</h5>
+
+                <form className="forms-sample" onSubmit={handleCopied}>
+
+                  <input
+                    className="form-control mt-2"
+                    type="text"
+                    value={generateReferralLink(currUserID)}
+                    readOnly
+                  />
+
+                  <button className="btn mt-3 submitbtn_ w-100" type="submit">
+                    {copied ? "Copied!" : "Copy"}
                   </button>
 
                 </form>
 
               </div>
             </div>
-
-          </div>
-
-        ) : (
-
-          <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
-
-            <div className="card-reg">
-              <div className="card-body-reg">
-
-                <h5 className="text-center">Your Referral Link</h5>
-
-                <div className="form-group w-100">
-
-                  <input
-                    className="form-control mt-2"
-                    type="text"
-                    value={generateReferralLink(userId)}
-                    readOnly
-                  />
-
-                  <button
-                    className="btn mt-3 submitbtn_ w-100"
-                    onClick={handleCopied}
-                  >
-                    {copied ? "Copied!" : "Copy Link"}
-                  </button>
-
-                </div>
-
-              </div>
-            </div>
-
           </div>
 
         )}
@@ -304,7 +265,6 @@ const Dashboard = () => {
       <Footer />
 
     </div>
-
   );
 };
 
