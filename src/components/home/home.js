@@ -67,6 +67,7 @@ const Dashboard = () => {
         Number(web3.utils.fromWei(tokenPriceIs, "ether")).toFixed(4)
       );
 
+  
       let tokenRewardIs = await NEW_CBC_ROI.methods.tokenReward().call();
       setTokenReward(
         Number(web3.utils.fromWei(tokenRewardIs, "ether")).toFixed(2)
@@ -82,7 +83,7 @@ const Dashboard = () => {
         Number(web3.utils.fromWei(users.income, "ether")).toFixed(2)
       );
       setUserAutoPoolPayReceived(users.autoPoolPayReceived);
-
+  
       let userReceiver = await NEW_CBC_ROI.methods
         .users(users.autopoolPayReciever)
         .call();
@@ -94,63 +95,65 @@ const Dashboard = () => {
     load();
   }, []);
 
+  async function epochToDate(epochTime) {
+    if (epochTime == undefined || Number(epochTime) <= 0) {
+      return "00/00/0000";
+    }
+    const milliseconds = epochTime * 1000;
+    const date = new Date(milliseconds);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   const handleChange = (event) => {
     setReferrerId(event.target.value);
   };
 
-  /* ===========================
-     FIXED REGISTRATION FUNCTION
-     =========================== */
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      if (!account) {
-        alert("Wallet not connected");
-        return;
-      }
+      let id = referrerId;
+      let amount = web3.utils.toWei(registration_Free, "ether");
 
-      if (!referrerId) {
-        alert("Please enter Referral ID");
-        return;
-      }
+      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
+      let USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
 
-      setLoading(true);
-
-      const ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
-      const USDTTest = new web3.eth.Contract(USDT.ABI, USDT.address);
-
-      const amount = web3.utils.toWei(registration_Free.toString(), "ether");
-
-      const allowance = await USDTTest.methods
+      let isAllowance = await USDTTest.methods
         .allowance(account, ICU.address)
-        .call();
+        .call({ gas: 200000 });
 
-      // approve if allowance insufficient
-      if (web3.utils.toBN(allowance).lt(web3.utils.toBN(amount))) {
+      let reg_user;
+
+      if (isAllowance < amount) {
+        setLoading(true);
+
         await USDTTest.methods
           .approve(ICU.address, amount)
-          .send({ from: account });
-      }
+          .send({ from: account })
+          .on("receipt", async function () {
+            setLoading(false);
 
-      const reg_user = await ICU_.methods
-        .Registration(Number(referrerId), amount)
-        .send({ from: account });
+            reg_user = await ICU_.methods
+              .Registration(id, amount)
+              .send({ from: account, value: 0 });
 
-      setLoading(false);
-
-      if (reg_user.status) {
-        alert("Registered Successfully");
-        window.location.reload();
+            alert(reg_user.status ? "Registerd Success" : "Registerd Failed !!!!");
+          })
+          .on("error", function () {
+            setLoading(false);
+          });
       } else {
-        alert("Registration Failed");
-      }
+        reg_user = await ICU_.methods
+          .Registration(id, amount)
+          .send({ from: account, value: 0 });
 
+        alert(reg_user.status ? "Registerd Success" : "Registerd Failed !!!!");
+      }
     } catch (e) {
       console.log("Error is :", e);
-      setLoading(false);
-      alert(e?.message || "Error occurred");
+      alert("Error occurred");
     }
   };
 
@@ -176,11 +179,10 @@ const Dashboard = () => {
 
   return (
     <div className="home-container">
-
-      {/* ACCOUNT ADDRESS */}
       <div className="col-sm-12 grid-margin">
         <div className="card">
           <div className="card-body-v1 text-center">
+            {/* Write Functionality Is Below */}
             <h5 className="mb-0 address-text">Account Address</h5>
             <h4 className="mb-0 golden-text text-right">
               {account ? account : "0x0000000000000000000000000000000000000000"}
@@ -188,20 +190,184 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <div className="row">
+        {/* token balance  */}
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Registration Fee</h5>
+              <h4 className="mb-0 golden-text">
+                {registration_Free ? registration_Free : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
-      {/* REGISTRATION SECTION */}
+        {/* token balance  */}
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Direct Income</h5>
+              <h4 className="mb-0 golden-text">
+                {registration_Free ? registration_Free / 10 : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
-      <div className="row justify-content-center">
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Current User ID</h5>
+              <h4 className="mb-0 golden-text">
+                {currUserID ? currUserID : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
 
-        {!isExist ? (
-          <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
-            <div className="card-reg">
-              <div className="card-body-reg">
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Next Reward</h5>
+              <h4 className="mb-0 golden-text">
+                {getNextReward ? getNextReward : 0} NVP
+              </h4>
+            </div>
+          </div>
+        </div>
 
-                <h5 className="text-center">Registration</h5>
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Level Income</h5>
+              <h4 className="mb-0 golden-text">
+                {level_income ? level_income : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
-                <form className="forms-sample" onSubmit={handleSubmit}>
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Token Price </h5>
+              <h4 className="mb-0 golden-text">
+                {tokenPrice ? tokenPrice : 0} USDT
+              </h4>
+            </div>
+          </div>
+        </div>
 
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Token Reward </h5>
+              <h4 className="mb-0 golden-text">
+                {tokenReward ? tokenReward : 0} NVP
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>User ID </h5>
+              <h4 className="mb-0 golden-text">{userId ? userId : 0} </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Sponsor</h5>
+              <h4 className="mb-0 golden-text">
+                {userReferrerID ? userReferrerID : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Direct</h5>
+              <h4 className="mb-0 golden-text">
+                {userReferredUsers ? userReferredUsers : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Income </h5>
+              <h4 className="mb-0 golden-text">
+                {userIncome ? userIncome : 0} USDT{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Number Of Auto Pool Income</h5>
+              <h4 className="mb-0 golden-text">
+                {userAutoPoolPayReceived ? userAutoPoolPayReceived : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+       
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Autopool Pay Reciever </h5>
+              <h4 className="mb-0 golden-text">
+                {userAutopoolPayReciever ? userAutopoolPayReciever : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4 col-md-6 col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body">
+              <h5>Number Of Level Income</h5>
+              <h4 className="mb-0 golden-text">
+                {userLevelIncomeReceived ? userLevelIncomeReceived : 0}{" "}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        
+       
+        <div className="col-sm-12 grid-margin">
+          <div className="card">
+            <div className="card-body text-center">
+              Write Functionality Is Below
+            </div>
+          </div>
+        </div>
+
+        {/* incomeMissed user  */}
+        <div className="row justify-content-center">
+  {!isExist ? (
+    <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
+      <div className="card-reg">
+        <div className="card-body-reg">
+          <h5 className="text-center">Registration</h5>
+
+          <div className="row">
+            <div className="col-sm-12 my-auto">
+              <form className="forms-sample" onSubmit={handleSubmit}>
+                <div className="form-group w-100 ">
                   <input
                     className="form-control mt-2"
                     type="number"
@@ -214,7 +380,7 @@ const Dashboard = () => {
 
                   {loading && (
                     <div className="loader-overlay">
-                      Transaction Processing...
+                      Transaction is Approving
                     </div>
                   )}
 
@@ -224,23 +390,23 @@ const Dashboard = () => {
                     disabled={loading}
                     value="Registration"
                   />
-
-                </form>
-
-              </div>
+                </div>
+              </form>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
+      <div className="card-reg">
+        <div className="card-body-reg">
+          <h5 className="text-center">Copy Referral Link</h5>
 
-        ) : (
-
-          <div className="col-sm-12 col-md-6 col-lg-5 grid-margin">
-            <div className="card-reg">
-              <div className="card-body-reg">
-
-                <h5 className="text-center">Copy Referral Link</h5>
-
-                <form className="forms-sample" onSubmit={handleCopied}>
-
+          <div className="row">
+            <div className="col-sm-12 my-auto">
+              <form className="forms-sample" onSubmit={handleCopied}>
+                <div className="form-group w-100">
                   <input
                     className="form-control mt-2"
                     type="text"
@@ -248,22 +414,26 @@ const Dashboard = () => {
                     readOnly
                   />
 
-                  <button className="btn mt-3 submitbtn_ w-100" type="submit">
+                  <button
+                    className="btn mt-3 submitbtn_ w-100"
+                    type="submit"
+                  >
                     {copied ? "Copied!" : "Copy"}
                   </button>
-
-                </form>
-
-              </div>
+                </div>
+              </form>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+          )}
 
-        )}
-
+          
+        </div>
       </div>
 
       <Footer />
-
     </div>
   );
 };
